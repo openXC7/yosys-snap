@@ -1,6 +1,6 @@
 name: yosys
 base: core20
-version: '0.17'
+version: '0.36'
 summary: yosys FPGA logic synthesis
 description: |
   Pre-packaged logic synthesis tool for use with open source FPGA toolchains
@@ -10,6 +10,7 @@ confinement: classic
 build-packages:
   - build-essential
   - clang
+  - gnat
   - bison
   - flex
   - cmake
@@ -27,16 +28,31 @@ build-packages:
 
 
 parts:
-  yosys:
-    source: https://github.com/YosysHQ/yosys.git
+  ghdl:
+    source: https://github.com/ghdl/ghdl.git
     source-type: git
     source-depth: 1
-    source-tag: yosys-0.17
+    source-tag: v3.0.0
     plugin: make
     make-parameters:
       - all
       - install
     override-build: |
+      ./configure --enable-synth --enable-libghdl
+      snapcraftctl build
+
+  yosys:
+    source: https://github.com/YosysHQ/yosys.git
+    source-type: git
+    source-depth: 1
+    source-tag: yosys-0.36
+    plugin: make
+    make-parameters:
+      - all
+      - install
+    override-build: |
+      git clone https://github.com/ghdl/ghdl-yosys-plugin.git
+      mv ghdl-yosys-plugin/src frontends/ghdl
       export PREFIX=/usr/
       make config-gcc
       snapcraftctl build
