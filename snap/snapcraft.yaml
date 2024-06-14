@@ -1,6 +1,6 @@
 name: yosys
 base: core20
-version: '0.42'
+version: '0.38'
 summary: yosys FPGA logic synthesis
 description: |
   Pre-packaged logic synthesis tool for use with open source FPGA toolchains
@@ -26,7 +26,6 @@ build-packages:
   - libboost-filesystem-dev
   - zlib1g-dev
 
-
 parts:
   ghdl:
     source: https://github.com/ghdl/ghdl.git
@@ -45,7 +44,7 @@ parts:
     source: https://github.com/YosysHQ/yosys.git
     source-type: git
     source-depth: 1
-    source-tag: yosys-0.42
+    source-tag: yosys-0.38
     plugin: make
     make-parameters:
       - all
@@ -58,6 +57,7 @@ parts:
       snapcraftctl build
     stage-packages:
       - libtcl8.6
+      - libgnat-9
       - graphviz
       - xdot
 
